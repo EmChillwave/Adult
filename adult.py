@@ -18,28 +18,58 @@ def descriptions():
     rdescription = df['Race'].describe()
     HPW_description = df['Hours per week'].describe()
     age_description = df['Age'].describe()
+    education_description = df['Education'].describe()
     print(rdescription)
     print(HPW_description)
     print(age_description)
+    print(education_description)
 
 
 df = pd.read_csv('adultDS.csv')
 print(df)
 descriptions()
 
-# Histogram of Hours per week
-plt.hist(df['Hours per week'], bins=20)
-plt.title('Histogram of Hours per week')
-plt.xlabel('Hours per week')
-plt.ylabel('Frequency')
+# Bar chart of Education level vs Count
+plt.figure(figsize=(10, 5))
+df['Education'].value_counts().plot(kind='bar')
+plt.title('Education Level Distribution')
+plt.xlabel('Education Level')
+plt.ylabel('Count')
 plt.show()
 
-# Boxplot of Age
-plt.boxplot(df['Age'])
-plt.title('Boxplot of Age')
-plt.ylabel('Age')
+# Scatter plot of Age vs Capital Gain
+plt.figure(figsize=(10, 5))
+plt.scatter(df['Age'], df['Capital Gain'], alpha=0.5)
+plt.title('Age vs Capital Gain')
+plt.xlabel('Age')
+plt.ylabel('Capital Gain')
 plt.show()
 
+# Create a pivot table to count the number of records for each combination of Race and Occupation
+pivot_table = pd.pivot_table(df, values='Age', index=['Race'], columns=[
+                             'Occupation'], aggfunc='count')
+
+# Plot the line chart
+pivot_table.plot(kind='line', marker='o')
+
+# Set the title and axis labels
+plt.title('Counts by Race and Occupation')
+plt.xlabel('Race')
+plt.ylabel('Counts')
+
+# Show the chart
+plt.show()
+
+# Box plot of Income vs Education level
+plt.figure(figsize=(10, 5))
+df.boxplot(column=['Capital Gain'], by='Education', rot=45)
+plt.title('Income vs Education Level')
+plt.xlabel('Education Level')
+plt.ylabel('Capital Gain')
+plt.show()
+
+# REGRESSION MODEL TO CALCULATE ACCURACY
+df = pd.read_csv('adultDs.csv')
 # Define the input and target variables
 X = df[['Age', 'Hours per week']]
 y = df['Capital Gain']
